@@ -27,7 +27,10 @@ export default class Minibase {
     }
 
     async get(tableName) {
-        return (await this._api('GET', this._url(tableName))).data
+        return (await this._api('GET', this._url(tableName))).values
+    }
+    async insert(tableName, data) {
+        return (await this._api('POST', this._url(tableName), data)).data
     }
 
     async login(data) {
