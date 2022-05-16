@@ -26,7 +26,7 @@ import ChatListPage from "$lib/components/ChatListPage.svelte";
 import LoginPage from "$lib/components/LoginPage.svelte";
 
   import minibase from "$lib/minibase";
-import { Avatar, Button, Input } from "@svind/svelte";
+import { Avatar, Button, Input, PageBody, PageWrapper } from "@svind/svelte";
 import { onMount } from "svelte";
 
   export let users;
@@ -56,6 +56,10 @@ import { onMount } from "svelte";
 
   }
 </script>
+<PageWrapper>
+
+  <PageBody>
+
 {#each users as user}
   <div class="flex p-4 border border-gray-400 bg-gray-50 m-4 gap-4">
     <Avatar size="xl" src={user.profile}/>
@@ -88,7 +92,9 @@ import { onMount } from "svelte";
   <Button on:click={sendMessage}>Send Message</Button>
 </div>
 
+</PageBody>
 
+</PageWrapper>
 
 <!-- {#if $session}
 <ChatListPage/>
