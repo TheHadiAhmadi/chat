@@ -66,7 +66,8 @@ import { onMount } from "svelte";
     <div class="flex-1">
       <div class="font-bold">{user.name}</div>
       <div>{user.username}</div>
-      <div>{user.id}</div>
+      <div>{user.bio}</div>
+      <div class="text-xs text-gray-800">{user.bio}</div>
     </div>
   </div>
 {/each}
