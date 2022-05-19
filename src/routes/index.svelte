@@ -64,10 +64,12 @@ import { onMount } from "svelte";
   <div class="flex p-4 border border-gray-400 bg-gray-50 m-4 gap-4">
     <Avatar size="xl" src={user.profile}/>
     <div class="flex-1">
-      <div class="font-bold">{user.name}</div>
-      <div>{user.username}</div>
+      <div class="flex gap-2">
+        <div class="font-bold">{user.name}</div>
+        <div class="text-sm">{user.username}</div>
+      </div>
       <div>{user.bio}</div>
-      <div class="text-xs text-gray-800">{user.bio}</div>
+      <div class="text-xs text-gray-800">{user.id}</div>
     </div>
   </div>
 {/each}
