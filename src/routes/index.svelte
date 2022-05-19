@@ -1,12 +1,8 @@
 <script context="module">
 	export async function load({ fetch }) {
-		console.time('fetch:api/users');
 		const users = await fetch('/api/users').then((res) => res.json());
-		console.timeEnd('fetch:api/users');
 
-		console.time('fetch:api/messages');
 		const messages = await fetch('/api/messages').then((res) => res.json());
-		console.timeEnd('fetch:api/messages');
 
 		return {
 			props: {
