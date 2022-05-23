@@ -1,12 +1,4 @@
 <script>
-import minibase from "$lib/minibase";
-
-  // import { useState } from 'react';
-  // import * as UI from './ui';
-
-  // import { useTheme } from '../theme';
-  // import { useView } from '../view';
-  // import { useAuth } from '../hooks/auth';
   import {
     Button,
     ButtonList,
@@ -17,37 +9,24 @@ import minibase from "$lib/minibase";
     FormInput,
   } from "@svind/svelte";
 
-  //   const { login, error } = useAuth();
+  export let mode;
 
   let username = "";
   let password = "";
 
-  let theme = "dark";
-  let view = "default";
-
-  let error = "";
-  //   const theme = useTheme();
-  //   const view = useView();
-
-  //   const next = () => {
-  //     login({
-  //       username,
-  //       password,
-  //     });
-  //   };
-
-  function login() {
+  async function login() {
     if(!username || !password) return
-    minibase.login({username, password})
+    const result = await fetch('/api/login', {method: 'POST', body: JSON.stringify({username, password})}).then(res => res.json())
+    // minibase.login({username, password})
+    console.log(result)
+    if(result.access_token) {
+      mode = 'chatlist'
+    }
   }
   
   function createAccount() {
-      console.log("Navigate to signup page")
+    mode = 'signup'
   }
-
-  //   const createAccount = () => {
-  //     view.setView('signup');
-  //   };
 </script>
 
 <div class="w-full h-full flex items-center justify-center">
@@ -55,14 +34,12 @@ import minibase from "$lib/minibase";
     <CardHeader>Login Page</CardHeader>
     <CardBody>
       <FormInput
-       variant="primary"
        bind:value={username}
        type="text"
        name="username"
        label="Username"
        />
        <FormInput
-       variant="primary"
         bind:value={password}
         type="password"
         name="password"

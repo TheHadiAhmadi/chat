@@ -1,1 +1,0 @@
-<div>Create New Group</div>

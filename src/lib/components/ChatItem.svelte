@@ -1,42 +1,47 @@
 <script>
-import { Avatar } from "@svind/svelte";
+	import { Avatar } from '@svind/svelte';
 
+	export let minimal = false;
+	export let profile = '/images/avatar.png';
+	export let lastMessage = null;
+	export let name = 'ss';
+	export let username = '';
+	export let id;
 
+	export let open = undefined;
 
-    export let chat = {}
-    export let minimal = false
-    export let open = undefined
+	function getMessageText(message) {
+		if (message) {
+			if (message.type === 'text') {
+				return message.text;
+			}
+			return message.type;
+		}
+		return '';
+	}
+</script>
 
-    chat.profile = chat?.profile ?? "/images/avatar.png"
+<div
+	on:click={() => open(id)}
+	class="flex gap-2 bg-gray-50 hover:bg-green-100 active:bg-green-500 transition-all p-3"
+>
+	<Avatar src={profile} size={minimal ? 'sm' : 'md'} />
 
-  function getMessageText(message) {
-    if (message) {
-      if (message.type === 'text') {
-        return message.text;
-      }
-      return message.type;
-    }
-    return '';
-  }
-  </script>
-    <div on:click={open} class="flex gap-2 hover:bg-gray-200 transition-all p-3">
-        <Avatar src={chat.profile} size={minimal ? 'sm' : 'md'}/>
-        
-      <div class="flex-1">
-          <div class="flex">
-              <p class="flex-1 text-bold text-lg">{chat.name}</p>
-              {#if !minimal && chat.lastMessage}
-              <div class="text-muted text-sm">
+	<div class="flex-1">
+		<div class="flex">
+      <div class="flex flex-col">
 
-                  Date
-                </div>
-              {/if}
-            </div>
-        {#if !minimal}
-        
-          <div class="flex flex-row">
-            <div class="flex flex-row items-center">
-              <!-- <span class="font-bold">
+        <p class="flex-1 text-bold text-lg">{name}</p>
+        <span class="text-sm -mt-1 text-muted">{username}</span>
+      </div>
+			{#if !minimal && lastMessage}
+				<div class="text-muted text-sm">Date</div>
+			{/if}
+		</div>
+		{#if !minimal}
+			<div class="flex flex-row">
+				<div class="flex flex-row items-center">
+					<!-- <span class="font-bold">
                   {#if chat.lastMessage?.sender === chat.id}
                     {chat.name}
                   {:else}
@@ -44,11 +49,11 @@ import { Avatar } from "@svind/svelte";
                   {/if}
               </span> -->
 
-              <span class="text-sm text-muted">
-                {getMessageText(chat.lastMessage?.message)}
-              </span>
-            </div>
-          </div>
-        {/if}
-      </div>
-    </div>
+					<span class="text-sm text-muted">
+						{getMessageText(lastMessage?.message)}
+					</span>
+				</div>
+			</div>
+		{/if}
+	</div>
+</div>

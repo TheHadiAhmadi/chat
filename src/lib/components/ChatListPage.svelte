@@ -1,104 +1,155 @@
 <script>
-  import { goto } from "$app/navigation";
+	import { goto, invalidate } from '$app/navigation';
 
-  import { session } from "$app/stores";
-  import minibase from "$lib/minibase";
+	import {
+		Button,
+		Dropdown,
+		FormInput,
+		Header,
+		Icon,
+		Input,
+		Menu,
+		MenuItem,
+		NavBrand,
+		PageWrapper
+	} from '@svind/svelte';
+	import { onMount } from 'svelte';
 
-  import {
-    Button,
-    Dropdown,
-    FormInput,
-    Header,
-    Icon,
-    Menu,
-    MenuItem,
-    NavBrand,
-  } from "@svind/svelte";
+	import ChatItem from './ChatItem.svelte';
 
-  import ChatItem from "./ChatItem.svelte";
-  // import * as UI from './ui';
+	export let mode;
+	export let user;
+	export let token;
+	export let activeChat;
 
-  // import { useChatList } from '../hooks/chatList';
+	export let chats;
+	export let users;
 
-  // export type ChatListProps = {
-  //   openChat: (chat: ChatType) => void;
-  //   openProfile: (id: number) => void;
-  //   openNewGroup: () => void;
-  //   logout: () => void;
-  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //   socket: any;
-  // };
+	onMount(async () => {
+		invalidate('');
+		chats = await fetch('/api/chats', {
+			headers: {
+				authorization: `bearer ${token}`
+			}
+		}).then((res) => res.json());
 
-  //   <!-- openChat,
-  //   openProfile,
-  //   openNewGroup,
-  //   logout,
-  //   socket, -->
+		users = await fetch('/api/users', {
+			headers: {
+				authorization: `bearer ${token}`
+			}
+		}).then((res) => res.json());
+	});
+	// import * as UI from './ui';
 
-  //   const { chats, search, searchItems, refetchChats } = useChatList();
-  let chats = [];
-  let searchItems = [],
-    refetchChats;
-  let isSearching = false;
-  let searchText = "";
-  let isOpen = false;
-  //   const [isSearchisetIsSearchingng, setIsSearching] = useState<boolean>(false);
+	// import { useChatList } from '../hooks/chatList';
 
-  function onNewMessage() {
-    refetchChats();
-  }
-  function openChat(chat) {
-    goto(`/${chat.id}`);
-  }
+	// export type ChatListProps = {
+	//   openChat: (chat: ChatType) => void;
+	//   openProfile: (id: number) => void;
+	//   openNewGroup: () => void;
+	//   logout: () => void;
+	//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+	//   socket: any;
+	// };
 
-  function openNewGroup() {}
+	//   <!-- openChat,
+	//   openProfile,
+	//   openNewGroup,
+	//   logout,
+	//   socket, -->
 
-  function openProfile() {}
-  //   useEffect(() => {
-  //     socket.on('/newMessage', onNewMessage);
-  //     console.log(socket);
-  //     return () => {
-  //       // eslint-disable-next-line no-param-reassign
-  //       socket._callbacks['$/newMessage'] = socket._callbacks['$/newMessage'].filter(
-  //         (callback: () => void) => callback !== onNewMessage
-  //       );
-  //     };
-  //   }, []);
+	//   const { chats, search, searchItems, refetchChats } = useChatList();
+	// let chats = [];
+	// let searchItems = [];
+	// function refetchChats() {
 
-  const buttons = [
-    {
-      name: "Logout",
-      icon: "mdi:logout",
-      href: "/logout",
-    },
-    {
-      name: "Create New Group",
-      icon: "mdi:add",
-      href: "/new",
-    },
-    {
-      name: "Edit Profile",
-      icon: "mdi:user",
-      href: "/profile",
-    },
-    {
-      name: "Refresh",
-      icon: "mdi:refresh",
-      onClick: () => {
-        refetchChats();
-      },
-    },
-    // {
-    //   name: store.get("theme") === "dark" ? "Light Mode" : "Dark Mode",
-    //   icon: store.get("theme") === "dark" ? "light_mode" : "dark_mode",
-    //   onClick: () => {
-    //     store.set("theme", store.get("theme") === "dark" ? "light" : "dark");
-    //   },
-    // },
-  ];
+	// }
+	// let isSearching = false;
+	// let searchText = "";
+	// let isOpen = false;
+	// //   const [isSearchisetIsSearchingng, setIsSearching] = useState<boolean>(false);
+
+	// function onNewMessage() {
+	//   refetchChats();
+	// }
+	// function openChat(chat) {
+	//   goto(`/${chat.id}`);
+	// }
+
+	// function openNewGroup() {}
+
+	// function openProfile() {}
+	// //   useEffect(() => {
+	// //     socket.on('/newMessage', onNewMessage);
+	// //     console.log(socket);
+	// //     return () => {
+	// //       // eslint-disable-next-line no-param-reassign
+	// //       socket._callbacks['$/newMessage'] = socket._callbacks['$/newMessage'].filter(
+	// //         (callback: () => void) => callback !== onNewMessage
+	// //       );
+	// //     };
+	// //   }, []);
+
+	// const buttons = [
+	//   {
+	//     name: "Logout",
+	//     icon: "mdi:logout",
+	//     onClick: () => {
+	function logout() {
+		localStorage.removeItem('mb-session');
+		mode = 'login';
+	}
+	//   },
+	//   {
+	//     name: "Create New Group",
+	//     icon: "mdi:add",
+	//     href: "/new",
+	//   },
+	//   {
+	//     name: "Edit Profile",
+	//     icon: "mdi:user",
+	//     href: "/profile",
+	//   },
+	//   {
+	//     name: "Refresh",
+	//     icon: "mdi:refresh",
+	//     onClick: () => {
+	//       refetchChats();
+	//     },
+	//   },
+	//   // {
+	//   //   name: store.get("theme") === "dark" ? "Light Mode" : "Dark Mode",
+	//   //   icon: store.get("theme") === "dark" ? "light_mode" : "dark_mode",
+	//   //   onClick: () => {
+	//   //     store.set("theme", store.get("theme") === "dark" ? "light" : "dark");
+	//   //   },
+	//   // },
+	// ];
+
+	function open(id) {
+		activeChat = users.find((u) => u.id === id);
+		mode = 'chatPage';
+	}
 </script>
 
-{#if $session}
+<PageWrapper>
+	<div class="navbar-header p-2 bg-green-600">
+		<div class="navbar-brand font-normal text-white">ChatsApp</div>
+	</div>
+	<div class="-mx-4 w-screen flex flex-col h-full">
+		<div class="h-full">
+			{#if users}
+				{#each users as user}
+					<ChatItem id={user.id} {open} minimal name={user.name} username={user.username} />
+					<hr />
+				{/each}
+			{/if}
+		</div>
+		<Button on:click={logout}>Logout</Button>
+	</div>
+</PageWrapper>
+
+<!-- 
   <div
     class="flex flex-col flex-1"
     on:click={() => {
@@ -110,13 +161,13 @@
         <NavBrand>ChatsApp</NavBrand>
       </div>
       <div
-        class="rounded-full flex flex-row flex-1 items-center {isSearching
+        class="rounded-full flex flex-row h-full flex-1 items-center {isSearching
           ? ` shadow`
           : ''}"
       >
         <div class="flex-1 relative">
-          <FormInput
-            class="form-control pr-10"
+          <Input
+            class="bg-teal-400 form-control pr-10"
             bind:value={searchText}
             type="text"
             placeholder="Search..."
@@ -164,7 +215,7 @@
         {/each}
       </div>
     </Header>
-    <!-- {/* dropdown */} -->
+    {/* dropdown */}
 
     <div
       class="h-full"
@@ -201,5 +252,4 @@
         {/each}
       {/if}
     </div>
-  </div>
-{/if}
+  </div> -->
