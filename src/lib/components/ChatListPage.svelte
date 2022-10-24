@@ -1,152 +1,155 @@
 <script>
-	import { goto, invalidate } from '$app/navigation';
+  import { goto, invalidate } from "$app/navigation";
+  import { getUsers } from "$lib/api";
 
-	import {
-		Button,
-		Dropdown,
-		FormInput,
-		Header,
-		Icon,
-		Input,
-		Menu,
-		MenuItem,
-		NavBrand,
-		PageWrapper
-	} from '@svind/svelte';
-	import { onMount } from 'svelte';
+  import {
+    Button,
+    Dropdown,
+    FormInput,
+    Header,
+    Icon,
+    Input,
+    Menu,
+    MenuItem,
+    NavBrand,
+    PageWrapper,
+  } from "@svind/svelte";
+  import { onMount } from "svelte";
 
-	import ChatItem from './ChatItem.svelte';
+  import ChatItem from "./ChatItem.svelte";
 
-	export let mode;
-	export let user;
-	export let token;
-	export let activeChat;
+  export let mode;
+  export let user;
+  export let token;
+  export let activeChat;
 
-	export let chats;
-	export let users;
+  export let chats;
+  export let users;
 
-	onMount(async () => {
-		invalidate('');
-		chats = await fetch('/api/chats', {
-			headers: {
-				authorization: `bearer ${token}`
-			}
-		}).then((res) => res.json());
+  onMount(async () => {
+    // invalidate('');
+    const token = localStorage.getItem("chat-token");
+    console.log({ token });
+    chats = await getUsers(token);
 
-		users = await fetch('/api/users', {
-			headers: {
-				authorization: `bearer ${token}`
-			}
-		}).then((res) => res.json());
-	});
-	// import * as UI from './ui';
+    users = chats;
+  });
+  // import * as UI from './ui';
 
-	// import { useChatList } from '../hooks/chatList';
+  // import { useChatList } from '../hooks/chatList';
 
-	// export type ChatListProps = {
-	//   openChat: (chat: ChatType) => void;
-	//   openProfile: (id: number) => void;
-	//   openNewGroup: () => void;
-	//   logout: () => void;
-	//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-	//   socket: any;
-	// };
+  // export type ChatListProps = {
+  //   openChat: (chat: ChatType) => void;
+  //   openProfile: (id: number) => void;
+  //   openNewGroup: () => void;
+  //   logout: () => void;
+  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //   socket: any;
+  // };
 
-	//   <!-- openChat,
-	//   openProfile,
-	//   openNewGroup,
-	//   logout,
-	//   socket, -->
+  //   <!-- openChat,
+  //   openProfile,
+  //   openNewGroup,
+  //   logout,
+  //   socket, -->
 
-	//   const { chats, search, searchItems, refetchChats } = useChatList();
-	// let chats = [];
-	// let searchItems = [];
-	// function refetchChats() {
+  //   const { chats, search, searchItems, refetchChats } = useChatList();
+  // let chats = [];
+  // let searchItems = [];
+  // function refetchChats() {
 
-	// }
-	// let isSearching = false;
-	// let searchText = "";
-	// let isOpen = false;
-	// //   const [isSearchisetIsSearchingng, setIsSearching] = useState<boolean>(false);
+  // }
+  // let isSearching = false;
+  // let searchText = "";
+  // let isOpen = false;
+  // //   const [isSearchisetIsSearchingng, setIsSearching] = useState<boolean>(false);
 
-	// function onNewMessage() {
-	//   refetchChats();
-	// }
-	// function openChat(chat) {
-	//   goto(`/${chat.id}`);
-	// }
+  // function onNewMessage() {
+  //   refetchChats();
+  // }
+  // function openChat(chat) {
+  //   goto(`/${chat.id}`);
+  // }
 
-	// function openNewGroup() {}
+  // function openNewGroup() {}
 
-	// function openProfile() {}
-	// //   useEffect(() => {
-	// //     socket.on('/newMessage', onNewMessage);
-	// //     console.log(socket);
-	// //     return () => {
-	// //       // eslint-disable-next-line no-param-reassign
-	// //       socket._callbacks['$/newMessage'] = socket._callbacks['$/newMessage'].filter(
-	// //         (callback: () => void) => callback !== onNewMessage
-	// //       );
-	// //     };
-	// //   }, []);
+  // function openProfile() {}
+  // //   useEffect(() => {
+  // //     socket.on('/newMessage', onNewMessage);
+  // //     console.log(socket);
+  // //     return () => {
+  // //       // eslint-disable-next-line no-param-reassign
+  // //       socket._callbacks['$/newMessage'] = socket._callbacks['$/newMessage'].filter(
+  // //         (callback: () => void) => callback !== onNewMessage
+  // //       );
+  // //     };
+  // //   }, []);
 
-	// const buttons = [
-	//   {
-	//     name: "Logout",
-	//     icon: "mdi:logout",
-	//     onClick: () => {
-	function logout() {
-		localStorage.removeItem('mb-session');
-		mode = 'login';
-	}
-	//   },
-	//   {
-	//     name: "Create New Group",
-	//     icon: "mdi:add",
-	//     href: "/new",
-	//   },
-	//   {
-	//     name: "Edit Profile",
-	//     icon: "mdi:user",
-	//     href: "/profile",
-	//   },
-	//   {
-	//     name: "Refresh",
-	//     icon: "mdi:refresh",
-	//     onClick: () => {
-	//       refetchChats();
-	//     },
-	//   },
-	//   // {
-	//   //   name: store.get("theme") === "dark" ? "Light Mode" : "Dark Mode",
-	//   //   icon: store.get("theme") === "dark" ? "light_mode" : "dark_mode",
-	//   //   onClick: () => {
-	//   //     store.set("theme", store.get("theme") === "dark" ? "light" : "dark");
-	//   //   },
-	//   // },
-	// ];
+  // const buttons = [
+  //   {
+  //     name: "Logout",
+  //     icon: "mdi:logout",
+  //     onClick: () => {
+  function logout() {
+    localStorage.removeItem("chat-user");
+    localStorage.removeItem("chat-token");
+    users = [];
+    mode = "login";
+  }
+  //   },
+  //   {
+  //     name: "Create New Group",
+  //     icon: "mdi:add",
+  //     href: "/new",
+  //   },
+  //   {
+  //     name: "Edit Profile",
+  //     icon: "mdi:user",
+  //     href: "/profile",
+  //   },
+  //   {
+  //     name: "Refresh",
+  //     icon: "mdi:refresh",
+  //     onClick: () => {
+  //       refetchChats();
+  //     },
+  //   },
+  //   // {
+  //   //   name: store.get("theme") === "dark" ? "Light Mode" : "Dark Mode",
+  //   //   icon: store.get("theme") === "dark" ? "light_mode" : "dark_mode",
+  //   //   onClick: () => {
+  //   //     store.set("theme", store.get("theme") === "dark" ? "light" : "dark");
+  //   //   },
+  //   // },
+  // ];
 
-	function open(id) {
-		activeChat = users.find((u) => u.id === id);
-		mode = 'chatPage';
-	}
+  function open(id) {
+    activeChat = users.find((u) => u.id === id);
+    mode = "chatPage";
+  }
 </script>
 
 <PageWrapper>
-	<div class="navbar-header p-2 bg-green-600">
-		<div class="navbar-brand font-normal text-white">ChatsApp</div>
-	</div>
-	<div class="-mx-4 w-screen flex flex-col h-full">
-		<div class="h-full">
-			{#if users}
-				{#each users as user}
-					<ChatItem id={user.id} {open} minimal name={user.name} username={user.username} />
-					<hr />
-				{/each}
-			{/if}
-		</div>
-		<Button on:click={logout}>Logout</Button>
-	</div>
+  <div class="navbar-header p-2 bg-green-600">
+    <div class="navbar-brand font-normal text-white">ChatsApp</div>
+  </div>
+  <div class="-mx-4 w-screen flex flex-col h-full">
+    <div class="h-full">
+      {#if users}
+        {#each users as user}
+          <ChatItem
+            id={user.id}
+            {open}
+            minimal
+            name={user.name}
+            username={user.username}
+          />
+          <hr />
+        {/each}
+      {/if}
+    </div>
+    <Button on:click={logout}>Logout</Button>
+  </div>
 </PageWrapper>
 
 <!-- 

@@ -1,4 +1,5 @@
 <script>
+  import { login } from "$lib/api";
   import {
     Button,
     ButtonList,
@@ -14,18 +15,20 @@
   let username = "";
   let password = "";
 
-  async function login() {
-    if(!username || !password) return
-    const result = await fetch('/api/login', {method: 'POST', body: JSON.stringify({username, password})}).then(res => res.json())
-    // minibase.login({username, password})
-    console.log(result)
-    if(result.access_token) {
-      mode = 'chatlist'
+  async function onLogin() {
+    if (!username || !password) return;
+    const result = await login({ username, password });
+
+    console.log(result);
+    if (result.token) {
+      localStorage.setItem("chat-user", JSON.stringify(result.user));
+      localStorage.setItem("chat-token", result.token);
+      mode = "chatlist";
     }
   }
-  
+
   function createAccount() {
-    mode = 'signup'
+    mode = "signup";
   }
 </script>
 
@@ -34,25 +37,22 @@
     <CardHeader>Login Page</CardHeader>
     <CardBody>
       <FormInput
-       bind:value={username}
-       type="text"
-       name="username"
-       label="Username"
-       />
-       <FormInput
+        bind:value={username}
+        type="text"
+        name="username"
+        label="Username"
+      />
+      <FormInput
         bind:value={password}
         type="password"
         name="password"
         label="Password"
       />
     </CardBody>
-    <div>Error:</div>
     <CardFooter>
       <ButtonList>
-        <Button on:click={createAccount}>
-          create account
-        </Button>
-        <Button variant="primary" on:click={login}>Next</Button>
+        <Button ghost on:click={createAccount}>create account</Button>
+        <Button variant="primary" on:click={onLogin}>Next</Button>
       </ButtonList>
     </CardFooter>
   </Card>
