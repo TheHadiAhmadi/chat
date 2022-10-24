@@ -71,7 +71,7 @@
       <Icon icon="la:arrow-left" />
     </button>
     <div class="flex items-center gap-2 w-full">
-      <Avatar src={"/images/avatar.png"} />
+      <Avatar src={"/chat/images/avatar.png"} />
       <div>
         <h2 class="text-xl font-bolder">
           {activeChat.username}

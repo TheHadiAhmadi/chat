@@ -2,7 +2,7 @@
 	import { Avatar } from '@svind/svelte';
 
 	export let minimal = false;
-	export let profile = '/images/avatar.png';
+	export let profile = '/chat/images/avatar.png';
 	export let lastMessage = null;
 	export let name = 'ss';
 	export let username = '';
