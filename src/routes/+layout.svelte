@@ -11,8 +11,8 @@
 
 </script>
 <script>
-	import '@svind/css/dist/index.css';
 	import 'virtual:windi.css';
+	import '@svind/svelte/styles.css';
 
 	import { Page, Button, PageWrapper, PageBody, Header, NavBrand } from '@svind/svelte';
 	import LoginPage from '$lib/components/LoginPage.svelte';
