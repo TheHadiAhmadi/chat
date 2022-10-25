@@ -52,7 +52,7 @@
     <CardFooter>
       <ButtonList>
         <Button ghost on:click={createAccount}>create account</Button>
-        <Button variant="primary" on:click={onLogin}>Next</Button>
+        <Button variant="success" on:click={onLogin}>Next</Button>
       </ButtonList>
     </CardFooter>
   </Card>

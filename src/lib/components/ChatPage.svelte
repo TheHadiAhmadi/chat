@@ -64,7 +64,10 @@
   });
 
   async function onSend() {
-    if (newMessageText === "" || sending) return;
+    if (newMessageText === "") return;
+    let message = newMessageText;
+    newMessageText = "";
+    sending = true;
 
     clearInterval(interval);
     interval = setInterval(() => loadMessages(), timeout);
@@ -73,18 +76,16 @@
       ...messages,
       {
         sending: true,
-        message: newMessageText,
+        message,
         to: activeChat.id,
         createdAt: "Sending...",
         seen: false,
       },
     ];
+    
     tick().then(() => {
       viewLastMessage(true);
     });
-    sending = true;
-    let message = newMessageText;
-    newMessageText = "";
 
     await sendMessage(
       { message, to: activeChat.id },
@@ -147,12 +148,10 @@
   </div>
   <div class="flex gap-2 -mx-4 p-2 bg-yellow-100">
     <input
-      disabled={sending}
       class="from-control p-2 px-4 outline-none w-full rounded-full bg-white shadow border border-gray-300"
       bind:value={newMessageText}
     />
     <button
-      disabled={sending}
       class="btn btn-success text-2xl bg-green-600 btn-circle"
       on:click={onSend}
     >

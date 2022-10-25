@@ -70,7 +70,7 @@
     <CardFooter>
       <ButtonList>
         <Button ghost on:click={noAccount}>no account?</Button>
-        <Button variant="primary" on:click={signup}>Next</Button>
+        <Button variant="success" on:click={signup}>Next</Button>
       </ButtonList>
     </CardFooter>
   </Card>
