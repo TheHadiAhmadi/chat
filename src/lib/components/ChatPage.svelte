@@ -53,6 +53,7 @@
     sending = false;
     newMessageText = "";
     clearInterval(interval);
+    loadMessages();
     interval = setInterval(() => loadMessages(), 5000);
   }
 
