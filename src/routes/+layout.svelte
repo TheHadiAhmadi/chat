@@ -36,6 +36,8 @@
   let users;
   let chats;
 
+  let messages = {};
+
   let mode = "loading";
 
   let activeChat;
@@ -64,7 +66,12 @@
       bind:mode
     />
   {:else if mode === "chatPage"}
-    <ChatPage {user} bind:activeChat bind:mode />
+    <ChatPage
+      {user}
+      bind:activeChat
+      bind:mode
+      bind:messages={messages[activeChat.id]}
+    />
   {:else}
     Loading ....
   {/if}

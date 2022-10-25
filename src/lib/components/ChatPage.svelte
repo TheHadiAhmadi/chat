@@ -21,17 +21,25 @@
 
   let messages = [];
 
+  let timeout = 3000;
+
   let interval;
   async function loadMessages() {
-    messages = await getMessages(
+    newMessages = await getMessages(
       activeChat.id,
       localStorage.getItem("chat-token")
     );
+    if (newMessages.length > messages.length) {
+      timeout = 1000;
+    } else {
+      timeout = Math.min(timeout + 500, 6000);
+    }
   }
 
   onMount(async () => {
     console.log({ user });
-    interval = setInterval(() => loadMessages(), 5000);
+    loadMessages();
+    interval = setInterval(() => loadMessages(), timeout);
   });
 
   async function onSend() {
@@ -54,7 +62,7 @@
     newMessageText = "";
     clearInterval(interval);
     loadMessages();
-    interval = setInterval(() => loadMessages(), 5000);
+    interval = setInterval(() => loadMessages(), timeout);
   }
 
   function onBack() {
