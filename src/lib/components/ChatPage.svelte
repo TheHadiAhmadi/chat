@@ -38,7 +38,7 @@
     messages = [
       ...messages,
       {
-        messages: newMessageText,
+        message: newMessageText,
         to: activeChat.id,
         createdAt: "Sending...",
         seen: false,
