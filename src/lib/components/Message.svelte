@@ -3,6 +3,7 @@
   export let createdAt;
   export let other = true;
   export let seen = false;
+  export let sending = false;
 
   $: console.log(other);
 </script>
@@ -10,6 +11,7 @@
 <div
   class="p-1 flex flex-col  mb-1 shadow rounded-lg mx-5 bg-green-300 self-end"
   class:!bg-white={other}
+  class:opacity-70={sending}
   class:!self-start={other}
 >
   {#if seen}
@@ -19,6 +21,8 @@
     {text}
   </div>
   <div class="text-right ml-12 mr-1 text-xs">
-    {new Date(createdAt).toTimeString().substring(0, 5)}
+    {#if !sending}
+      {new Date(createdAt).toTimeString().substring(0, 5)}
+    {/if}
   </div>
 </div>

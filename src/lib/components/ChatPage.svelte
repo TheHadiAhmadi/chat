@@ -9,21 +9,31 @@
     PageHeader,
     PageWrapper,
   } from "@svind/svelte";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount, tick } from "svelte";
   import Message from "./Message.svelte";
 
   export let user;
   export let activeChat;
   export let mode;
 
+  let lastEl;
+
   let sending = false;
   let newMessageText = "";
+  let skipScroll = false;
 
-  let messages = [];
+  export let messages = [];
 
   let timeout = 3000;
 
   let interval;
+
+  function viewLastMessage(force = false) {
+    if (skipScroll && !force) return;
+    console.log(lastEl, { skipScroll });
+    lastEl?.scrollIntoView();
+  }
+
   async function loadMessages() {
     console.log("loadMessages");
     let newMessages = await getMessages(
@@ -37,38 +47,63 @@
     }
     if (sending) return;
     messages = newMessages;
+    tick().then(() => {
+      viewLastMessage();
+    });
   }
 
   onMount(async () => {
     loadMessages();
+    viewLastMessage();
+
     interval = setInterval(() => loadMessages(), timeout);
+  });
+
+  onDestroy(() => {
+    clearInterval(interval);
   });
 
   async function onSend() {
     if (newMessageText === "" || sending) return;
 
+    clearInterval(interval);
     interval = setInterval(() => loadMessages(), timeout);
 
     messages = [
       ...messages,
       {
+        sending: true,
         message: newMessageText,
         to: activeChat.id,
         createdAt: "Sending...",
         seen: false,
       },
     ];
+    tick().then(() => {
+      viewLastMessage(true);
+    });
     sending = true;
+    let message = newMessageText;
+    newMessageText = "";
 
     await sendMessage(
-      { message: newMessageText, to: activeChat.id },
+      { message, to: activeChat.id },
       localStorage.getItem("chat-token")
     );
-    newMessageText = "";
-    clearInterval(interval);
     loadMessages().then(() => {
       sending = false;
     });
+  }
+
+  function onScroll(e) {
+    if (
+      e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight >
+      30
+    ) {
+      skipScroll = true;
+    } else {
+      skipScroll = false;
+    }
   }
 
   function onBack() {
@@ -80,7 +115,7 @@
 <PageWrapper>
   <div class="navbar-header bg-green-600 py-2 text-white gap-2">
     <button
-      class="btn btn-circle text-3xl text-white bg-transparent hover:bg-white/10 active:bg-white/30"
+      class="btn btn-circle text-3xl !text-white !bg-transparent !hover:bg-white/10 !active:bg-white/30"
       on:click={onBack}
     >
       <Icon icon="la:arrow-left" />
@@ -97,6 +132,7 @@
     <div>Menu</div>
   </div>
   <div
+    on:scroll={onScroll}
     class="-mx-4 flex flex-col overflow-auto p-1 w-screen h-full bg-yellow-100"
   >
     {#each messages as message}
@@ -104,8 +140,10 @@
         createdAt={message.createdAt}
         text={message.message}
         other={message.from === activeChat.id}
+        sending={message.sending}
       />
     {/each}
+    <div bind:this={lastEl} />
   </div>
   <div class="flex gap-2 -mx-4 p-2 bg-yellow-100">
     <input

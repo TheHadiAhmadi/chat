@@ -60,6 +60,7 @@
     <ChatListPage
       bind:chats
       bind:users
+      bind:messages
       {token}
       {user}
       bind:activeChat
@@ -76,3 +77,15 @@
     Loading ....
   {/if}
 </Page>
+
+<style>
+  :global(.page) {
+    height: 100%;
+  }
+
+  :global(html),
+  :global(body),
+  :global(.parent) {
+    height: 100%;
+  }
+</style>

@@ -1,6 +1,6 @@
 <script>
   import { goto, invalidate } from "$app/navigation";
-  import { getUsers } from "$lib/api";
+  import { getMessages, getUsers } from "$lib/api";
 
   import {
     Button,
@@ -21,6 +21,7 @@
   export let mode;
   export let user;
   export let token;
+  export let messages;
   export let activeChat;
 
   export let chats;
@@ -31,6 +32,12 @@
     const token = localStorage.getItem("chat-token");
     console.log({ token });
     chats = await getUsers(token);
+
+    await Promise.all(
+      chats.map(async (chat) => {
+        messages[chat.id] = await getMessages(chat.id, token);
+      })
+    );
 
     users = chats;
   });
