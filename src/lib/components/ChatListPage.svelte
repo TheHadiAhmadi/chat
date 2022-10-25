@@ -94,6 +94,7 @@
     localStorage.removeItem("chat-user");
     localStorage.removeItem("chat-token");
     users = [];
+    chats = [];
     mode = "login";
   }
   //   },

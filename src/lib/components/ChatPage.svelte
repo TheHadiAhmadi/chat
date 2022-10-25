@@ -20,40 +20,36 @@
 
   let messages = [];
 
+  let interval;
   async function loadMessages() {
-    console.log({ user, activeChat });
     messages = await getMessages(
       activeChat.id,
       localStorage.getItem("chat-token")
     );
-    console.log(messages);
-
-    // messages = result.filter((message) => {
-    // 	console.log('me: ', user.id, 'other: ', activeChat.id);
-    // 	console.log('sender: ', message.sender, 'receiver: ', message.receiver);
-    // 	if (
-    // 		(message.sender === activeChat.id && message.sender === user.id) ||
-    // 		(message.sender === user.id && message.receiver === activeChat.id)
-    // 	) {
-    // 		return true;
-    // 	} else {
-    // 		return false;
-    // 	}
-    // });
   }
+
   onMount(async () => {
     console.log({ user });
-    loadMessages();
+    interval = setInterval(() => loadMessages(), 5000);
   });
 
   async function onSend() {
+    messages = [
+      ...messages,
+      {
+        messages: newMessageText,
+        to: activeChat.id,
+        createdAt: "Sending...",
+        seen: false,
+      },
+    ];
+    newMessageText = "";
     await sendMessage(
       { message: newMessageText, to: activeChat.id },
       localStorage.getItem("chat-token")
     );
-    newMessageText = "";
-
-    await loadMessages();
+    clearInterval(interval);
+    interval = setInterval(() => loadMessages(), 5000);
   }
 
   function onBack() {

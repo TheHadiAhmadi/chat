@@ -2,6 +2,8 @@
   export let text;
   export let createdAt;
   export let other = true;
+  export let seen = false;
+
   $: console.log(other);
 </script>
 
@@ -10,6 +12,9 @@
   class:!bg-white={other}
   class:!self-start={other}
 >
+  {#if seen}
+    <div>Seen</div>
+  {/if}
   <div class="p-2">
     {text}
   </div>
