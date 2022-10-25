@@ -16,6 +16,7 @@
   export let activeChat;
   export let mode;
 
+  let sending = false;
   let newMessageText = "";
 
   let messages = [];
@@ -43,11 +44,14 @@
         seen: false,
       },
     ];
-    newMessageText = "";
+    sending = true;
+
     await sendMessage(
       { message: newMessageText, to: activeChat.id },
       localStorage.getItem("chat-token")
     );
+    sending = false;
+    newMessageText = "";
     clearInterval(interval);
     interval = setInterval(() => loadMessages(), 5000);
   }
@@ -90,10 +94,12 @@
   </div>
   <div class="flex gap-2 -mx-4 p-2 bg-yellow-100">
     <input
+      disabled={sending}
       class="from-control p-2 px-4 outline-none w-full rounded-full bg-white shadow border border-gray-300"
       bind:value={newMessageText}
     />
     <button
+      disabled={sending}
       class="btn btn-success text-2xl bg-green-600 btn-circle"
       on:click={onSend}
     >
