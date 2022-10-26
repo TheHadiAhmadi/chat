@@ -129,6 +129,7 @@
   // ];
 
   function open(id) {
+    console.log("open", id, users);
     activeChat = users.find((u) => u.id === id);
     mode = "chatPage";
   }

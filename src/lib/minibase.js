@@ -1,9 +1,10 @@
 const minibase = (appName) => {
   let token = "";
 
-  async function run(functionName, data) {
+  async function run(functionName, data = {}) {
     const baseUrl = `https://${appName}.theminibase.com/`;
     const opts = {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: "bearer " + token,
@@ -12,7 +13,10 @@ const minibase = (appName) => {
     };
 
     const res = await fetch(baseUrl + functionName, opts);
-    return res.json();
+    const result = await res.json();
+    if (result.error) throw new Error(result.error);
+    
+    return result.data;
   }
 
   return {
