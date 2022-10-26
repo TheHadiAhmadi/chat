@@ -1,5 +1,6 @@
 <script>
   import { register } from "$lib/api";
+  import minibase from "$lib/minibase";
   import {
     Button,
     ButtonList,
@@ -22,7 +23,7 @@
 
   async function signup() {
     if (!username || !password || !email) return;
-    const result = await register({
+    const result = await minibase.register({
       name,
       username,
       password,
@@ -31,6 +32,7 @@
     });
 
     if (result.token) {
+      minibase.setToken(result.token);
       localStorage.setItem("chat-token", result.token);
       localStorage.setItem("chat-user", result.user);
       mode = "chatlist";

@@ -1,5 +1,6 @@
 <script>
   import { getMessages, sendMessage } from "$lib/api";
+  import minibase from "$lib/minibase";
   import {
     Avatar,
     Button,
@@ -36,10 +37,7 @@
 
   async function loadMessages() {
     console.log("loadMessages");
-    let newMessages = await getMessages(
-      activeChat.id,
-      localStorage.getItem("chat-token")
-    );
+    let newMessages = await minibase.getMessages({ with: activeChat.id });
     if (newMessages.length > messages.length) {
       timeout = 1000;
     } else {
@@ -82,15 +80,13 @@
         seen: false,
       },
     ];
-    
+
     tick().then(() => {
       viewLastMessage(true);
     });
 
-    await sendMessage(
-      { message, to: activeChat.id },
-      localStorage.getItem("chat-token")
-    );
+    await minibase.sendMessage({ message, to: activeChat.id });
+    
     loadMessages().then(() => {
       sending = false;
     });

@@ -1,28 +1,28 @@
-async function send(pathname, method, data, token) {
-  const opts = {};
-  if (method) {
-    opts.method = method;
-  }
-  if (token) {
-    opts.headers = {};
-    opts.headers.Authorization = `bearer ${token}`;
-  }
+// async function send(pathname, method, data, token) {
+//   const opts = {};
+//   if (method) {
+//     opts.method = method;
+//   }
+//   if (token) {
+//     opts.headers = {};
+//     opts.headers.Authorization = `bearer ${token}`;
+//   }
 
-  if (data) {
-    opts.body = JSON.stringify(data);
-  }
-  const result = await fetch(
-    "https://chat.theminibase.com" + pathname,
-    opts
-  ).then((res) => res.json());
+//   if (data) {
+//     opts.body = JSON.stringify(data);
+//   }
+//   const result = await fetch(
+//     "https://chat.theminibase.com" + pathname,
+//     opts
+//   ).then((res) => res.json());
 
-  if (result.success) {
-    return result.data;
-  } else {
-    console.log(result.message);
-    throw new Error(result.message);
-  }
-}
+//   if (result.success) {
+//     return result.data;
+//   } else {
+//     console.log(result.message);
+//     throw new Error(result.message);
+//   }
+// }
 
 export function getUsers(token) {
   return send("/getUsers", null, null, token);

@@ -1,5 +1,6 @@
 <script>
   import { login } from "$lib/api";
+  import minibase from "$lib/minibase";
   import {
     Button,
     ButtonList,
@@ -17,10 +18,12 @@
 
   async function onLogin() {
     if (!username || !password) return;
-    const result = await login({ username, password });
+    const result = await minibase.login({ username, password });
 
     console.log(result);
     if (result.token) {
+      minibase.setToken(result.token);
+
       localStorage.setItem("chat-user", JSON.stringify(result.user));
       localStorage.setItem("chat-token", result.token);
       mode = "chatlist";

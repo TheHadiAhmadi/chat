@@ -1,6 +1,7 @@
 <script>
   import { goto, invalidate } from "$app/navigation";
   import { getMessages, getUsers } from "$lib/api";
+  import minibase from "$lib/minibase";
 
   import {
     Button,
@@ -28,14 +29,11 @@
   export let users;
 
   onMount(async () => {
-    // invalidate('');
-    const token = localStorage.getItem("chat-token");
-    console.log({ token });
-    chats = await getUsers(token);
+    chats = await minibase.getUsers();
 
     await Promise.all(
       chats.map(async (chat) => {
-        messages[chat.id] = await getMessages(chat.id, token);
+        messages[chat.id] = await minibase.getMessages({ with: chat.id });
       })
     );
 
@@ -98,6 +96,7 @@
   //     icon: "mdi:logout",
   //     onClick: () => {
   function logout() {
+    minibase.setToken("");
     localStorage.removeItem("chat-user");
     localStorage.removeItem("chat-token");
     users = [];

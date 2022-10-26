@@ -27,6 +27,7 @@
   import ChatListPage from "$lib/components/ChatListPage.svelte";
   import { onMount } from "svelte";
   import ChatPage from "$lib/components/ChatPage.svelte";
+  import minibase from "$lib/minibase";
 
   let dark = false;
 
@@ -47,6 +48,9 @@
     mode = token ? "chatlist" : "login";
 
     if (!token) return;
+
+    minibase.setToken(token);
+
     user = JSON.parse(localStorage.getItem("chat-user"));
   });
 </script>
