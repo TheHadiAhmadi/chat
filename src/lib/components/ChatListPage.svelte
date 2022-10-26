@@ -1,6 +1,4 @@
 <script>
-  import { goto, invalidate } from "$app/navigation";
-  import { getMessages, getUsers } from "$lib/api";
   import minibase from "$lib/minibase";
 
   import {

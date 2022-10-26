@@ -1,5 +1,4 @@
 <script>
-  import { register } from "$lib/api";
   import minibase from "$lib/minibase";
   import {
     Button,
@@ -10,8 +9,6 @@
     CardHeader,
     FormInput,
   } from "@svind/svelte";
-
-  //   const { login, error } = useAuth();
 
   export let mode;
 

@@ -1,5 +1,4 @@
 <script>
-  import { login } from "$lib/api";
   import minibase from "$lib/minibase";
   import {
     Button,

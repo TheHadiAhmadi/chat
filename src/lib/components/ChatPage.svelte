@@ -1,5 +1,4 @@
 <script>
-  import { getMessages, sendMessage } from "$lib/api";
   import minibase from "$lib/minibase";
   import {
     Avatar,
@@ -86,7 +85,7 @@
     });
 
     await minibase.sendMessage({ message, to: activeChat.id });
-    
+
     loadMessages().then(() => {
       sending = false;
     });
