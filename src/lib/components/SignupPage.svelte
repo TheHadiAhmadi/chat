@@ -36,7 +36,7 @@
     }
   }
 
-  function noAccount() {
+  function hasAccount() {
     mode = "login";
   }
 </script>
@@ -68,7 +68,7 @@
     </CardBody>
     <CardFooter>
       <ButtonList>
-        <Button ghost on:click={noAccount}>no account?</Button>
+        <Button ghost on:click={hasAccount}>already has account?</Button>
         <Button variant="success" on:click={signup}>Next</Button>
       </ButtonList>
     </CardFooter>
