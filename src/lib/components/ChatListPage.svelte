@@ -135,9 +135,13 @@
   }
 </script>
 
-<PageWrapper>
+<div class="page-wrapper bg-green-100/10 absolute">
   <div class="navbar-header p-2 bg-green-600">
-    <div class="navbar-brand font-normal text-white">ChatsApp</div>
+    <div class="navbar-brand font-normal text-white">
+      <h1>ChatsApp</h1>
+    </div>
+    <Button on:click={logout} ghost class="pr-0 hover:text-white">Logout</Button
+    >
   </div>
   <div class="-mx-4 w-screen flex flex-col h-full">
     <div class="h-full">
@@ -150,13 +154,11 @@
             name={user.name}
             username={user.username}
           />
-          <hr />
         {/each}
       {/if}
     </div>
-    <Button on:click={logout}>Logout</Button>
   </div>
-</PageWrapper>
+</div>
 
 <!-- 
   <div

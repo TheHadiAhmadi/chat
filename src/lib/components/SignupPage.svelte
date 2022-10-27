@@ -31,7 +31,7 @@
     if (result.token) {
       minibase.setToken(result.token);
       localStorage.setItem("chat-token", result.token);
-      localStorage.setItem("chat-user", result.user);
+      localStorage.setItem("chat-user", JSON.stringify(result.user));
       mode = "chatlist";
     }
   }

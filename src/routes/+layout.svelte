@@ -55,7 +55,7 @@
   });
 </script>
 
-<Page {dark}>
+<Page dark>
   {#if mode === "login"}
     <LoginPage bind:mode />
   {:else if mode === "signup"}
