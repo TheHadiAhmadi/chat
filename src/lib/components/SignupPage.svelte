@@ -15,7 +15,7 @@
   let name = "";
   let username = "";
   let password = "";
-  let email = "test@test.gmail.com";
+  let email = "";
   let bio = "Hey There! I am using ChatsApp";
 
   async function signup() {
