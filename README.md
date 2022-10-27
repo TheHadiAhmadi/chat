@@ -1,25 +1,69 @@
 # Chat app
 a demo for minibase project
-uses database, authentication and realtime data. 
+uses database and functions features of Minibase. 
 
+Backend is completely written with Minibase and frontend is hosted in Github Pages https://thehadiahmadi.github.io/chat
 
-# create-svelte
+# api
+these are api functions which is used by frontend
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+|name|description|parameters|needs token?|returns|
+|---|---|---|---|---|
+|login|Login to chat app|{username, password}|No|{token, user}|
+|register|Registers a new user|{name, username, password, email, bio?}|No|{token, user}|
+|getUsers|returns list of all Users|{}|Yes|[User]|
+|getMessages|returns all Messages between two users|{with}|Yes|[Message]|
+|sendMessage|Send message to user|{to, message, replyTo}|Yes|Message|
 
-## Creating a project
+# function usage
+You should use POST method to run functions
 
-If you're seeing this, you've probably already done this step. Congrats!
+```js
+const token = 'the token which returned from login or register functions'
 
-```bash
-# create a new project in the current directory
-npm init svelte@next
+const message = {
+  to: '1234-1234-1234567-123456-1234', // id of the user who will receive the message
+  message: 'The content of Message',
+  replyTo: null // id of message which you want to reply to
+}
 
-# create a new project in my-app
-npm init svelte@next my-app
+const result = await fetch('https://chat.theminibase.com/sendMessage', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + token
+  },
+  body: JSON.stringify(message)
+}).then(res => res.json())
+
+console.log(result.data) 
+// {
+//   id: 'abcd-1234-123124-123124-2356', 
+//   message: 'The content of Message', 
+//   to: '1234-1234-1234567-123456-1234', 
+//   replyTo: null
+// }
 ```
 
-> Note: the `@next` is temporary
+Also you can run functions using Minibase.js file (You can get for your project from Minibase dashboard)
+```js
+import minibase from './minibase.js'
+
+// set token using setToken method
+minibase.setToken('the token....')
+
+const message = {
+  to: '1234-1234-1234567-123456-1234', // id of the user who will receive the message
+  message: 'The content of Message',
+  replyTo: null // id of message which you want to reply to
+}
+
+const result = await minibase.sendMessage(message)
+
+console.log(result)
+// same as above
+```
+
 
 ## Developing
 
