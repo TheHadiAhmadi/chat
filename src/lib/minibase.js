@@ -1,8 +1,11 @@
+/* DO NOT EDIT MANUALLY, 
+THIS FILE IS AVAILABLE AT https://chat.theminibase.com */
+
 const minibase = (appName) => {
   let token = "";
 
   async function run(functionName, data = {}) {
-    const baseUrl = `https://${appName}.theminibase.com/`;
+    const baseUrl = "https://" + appName + ".theminibase.com/";
     const opts = {
       method: "POST",
       headers: {
@@ -14,8 +17,9 @@ const minibase = (appName) => {
 
     const res = await fetch(baseUrl + functionName, opts);
     const result = await res.json();
+
     if (result.error) throw new Error(result.error);
-    
+
     return result.data;
   }
 
@@ -28,9 +32,9 @@ const minibase = (appName) => {
     },
     getUsers: (data) => run("getUsers", data),
     getMessages: (data) => run("getMessages", data),
-    sendMessage: (data) => run("sendMessage", data),
-    login: (data) => run("login", data),
     register: (data) => run("register", data),
+    login: (data) => run("login", data),
+    sendMessage: (data) => run("sendMessage", data),
   };
 };
 
