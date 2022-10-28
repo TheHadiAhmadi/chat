@@ -153,14 +153,16 @@
         sending={message.sending}
       />
     {:else}
-      <div
-        class="flex w-full h-full items-center justify-center text-xl gap-4 flex-col"
-      >
-        <p>No Messages Yet!</p>
-        <button on:click={sendHello} class="p-4 bg-white/20 rounded-xl"
-          >Say Hello! 👋</button
+      {#if !sending}
+        <div
+          class="flex w-full h-full items-center justify-center text-xl gap-4 flex-col"
         >
-      </div>
+          <p>No Messages Yet!</p>
+          <button on:click={sendHello} class="p-4 bg-white/20 rounded-xl"
+            >Say Hello! 👋</button
+          >
+        </div>
+      {/if}
     {/each}
     <div bind:this={lastEl} />
   </div>
