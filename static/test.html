@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://chat.theminibase.com/cdn.js"></script>
+    <title>Document</title>
+    <style>
+      pre {
+        word-wrap: break-word;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Login</h1>
+    <label for="username">Username</label>
+    <input id="username" type="text" />
+
+    <br />
+    <label for="password">Password</label>
+    <input id="password" type="text" />
+
+    <br />
+    <button onclick="login()">Login</button>
+    <pre id="result-login"></pre>
+
+    <h1>Get Users</h1>
+
+    <button onclick="getUsers()">Get Users</button>
+    <pre id="result-getUsers"></pre>
+
+    <h1>Register</h1>
+
+    <br />
+    <label for="username2">username: </label>
+    <input id="username2" type="text" />
+    <br />
+    <label for="password2">password: </label>
+    <input id="password2" type="text" />
+    <br />
+    <label for="name">name: </label>
+    <input id="name" type="text" />
+    <br />
+    <label for="email">email: </label>
+    <input id="email" type="text" />
+    <br />
+    <label for="bio">bio: </label>
+    <input id="bio" type="text" />
+    <br />
+    <button onclick="register()">Register</button>
+    <pre id="result-register"></pre>
+
+    <h1>Get Users</h1>
+    <button onclick="getUsers()">Get Users</button>
+    <pre id="result-getUsers"></pre>
+
+    <h1>Get Messages</h1>
+    <label for="with">With: </label>
+    <input id="with" type="text" />
+    <button onclick="getMessages()">Get Messages</button>
+    <pre id="result-getMessages"></pre>
+
+    <h1>Send Message</h1>
+    <input id="to" type="text" />
+    <br />
+    <textarea id="message" cols="30" rows="10"></textarea>
+    <br />
+    <input id="replyTo" type="text" />
+    <br />
+    <button onclick="sendMessage()">Send Message</button>
+
+    <pre id="result-sendMessage"></pre>
+
+    <script>
+      async function login() {
+        const resultEl = document.getElementById("result-login");
+        resultEl.innerHTML = "Loading...";
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const result = await chat.login({ username, password });
+
+        chat.setToken(result.token);
+        resultEl.innerHTML = JSON.stringify(result, null, 2);
+      }
+
+      async function register() {
+        const resultEl = document.getElementById("result-register");
+        resultEl.innerHTML = "Loading...";
+        const username = document.getElementById("username2").value;
+        const password = document.getElementById("password2").value;
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const bio = document.getElementById("bio").value;
+        const result = await chat.login({
+          username,
+          password,
+          email,
+          bio,
+          result,
+        });
+
+        chat.setToken(result.token);
+        resultEl.innerHTML = JSON.stringify(result, null, 2);
+      }
+
+      async function getUsers() {
+        const resultEl = document.getElementById("result-getUsers");
+
+        resultEl.innerHTML = "Loading...";
+        const users = await chat.getUsers();
+
+        resultEl.innerHTML = JSON.stringify(users, null, 2);
+      }
+      async function getMessages() {
+        const resultEl = document.getElementById("result-getMessages");
+
+        resultEl.innerHTML = "Loading...";
+        const with_ = document.getElementById("with").value;
+        const messages = await chat.getMessages({ with: with_ });
+
+        resultEl.innerHTML = JSON.stringify(messages, null, 2);
+      }
+      async function sendMessage() {
+        const resultEl = document.getElementById("result-sendMessage");
+
+        resultEl.innerHTML = "Loading...";
+        const to = document.getElementById("to").value;
+        const message = document.getElementById("message").value;
+        const replyTo = document.getElementById("replyTo").value;
+
+        const result = await chat.sendMessage({ to, message, replyTo });
+
+        resultEl.innerHTML = JSON.stringify(result, null, 2);
+      }
+    </script>
+  </body>
+</html>
