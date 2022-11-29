@@ -58,7 +58,7 @@
     {#if sending}
       Sending...
     {:else}
-      {getDate(new Date(createdAt))}
+      {getDate(new Date(Number(createdAt)))}
     {/if}
   </div>
 </div>
