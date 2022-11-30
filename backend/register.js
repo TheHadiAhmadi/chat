@@ -1,6 +1,10 @@
-function hashPassword(pass) {
-  return pass;
+function hashPassword(str) {
+  if (str) {
+    return crypto.createHash("sha256").update(str).digest("hex");
+  }
+  throw new Error("empty password");
 }
+
 exports = async (body, ctx) => {
   try {
     const { name, username, email, password, bio = "Hello World!" } = body;

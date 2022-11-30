@@ -5,7 +5,7 @@ const minibase = (appName) => {
   let token = "";
 
   async function run(functionName, data = {}) {
-    const baseUrl = "https://" + appName + ".theminibase.com/";
+    const baseUrl = "https://cloud-3.domcloud.io/chat/";
     const opts = {
       method: "POST",
       headers: {

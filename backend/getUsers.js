@@ -30,6 +30,8 @@ exports = async (body, ctx) => {
       };
     }
 
+    
+
     const users = await ctx.db.users.find();
 
     return {
