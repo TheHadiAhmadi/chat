@@ -4,10 +4,10 @@ THIS FILE IS AVAILABLE AT https://chat.theminibase.com */
 const minibase = (appName) => {
   let token = "";
 
-  async function run(functionName, data = {}) {
-    const baseUrl = "https://minibase-api.onrender.com/chat/";
+  async function run(functionName, method, data = {}) {
+    const baseUrl = "https://minibase-project-chat-api.vercel.app/";
     const opts = {
-      method: "POST",
+      method,
       headers: {
         "Content-Type": "application/json",
         Authorization: "bearer " + token,
@@ -30,11 +30,11 @@ const minibase = (appName) => {
     getToken() {
       return token;
     },
-    getUsers: (data) => run("getUsers", data),
-    getMessages: (data) => run("getMessages", data),
-    register: (data) => run("register", data),
-    login: (data) => run("login", data),
-    sendMessage: (data) => run("sendMessage", data),
+    getUsers: (data) => run("getUsers", "GET", data),
+    getMessages: (data) => run("getMessages", "GET", data),
+    register: (data) => run("register", "POST", data),
+    login: (data) => run("login", "POST", data),
+    sendMessage: (data) => run("sendMessage", "POST", data),
   };
 };
 
