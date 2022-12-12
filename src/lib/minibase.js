@@ -5,6 +5,7 @@ const minibase = (appName) => {
   let token = "";
 
   async function run(functionName, method, data = {}) {
+    // const baseUrl = "http://localhost:3000/";
     const baseUrl = "https://minibase-project-chat-api.vercel.app/";
     const opts = {
       method,
@@ -12,11 +13,23 @@ const minibase = (appName) => {
         "Content-Type": "application/json",
         Authorization: "bearer " + token,
       },
-      body: JSON.stringify(data),
+      body: method === "GET" ? null : JSON.stringify(data),
     };
 
-    const res = await fetch(baseUrl + functionName, opts);
+    let queryParams = "";
+
+    if (method === "GET") {
+      queryParams = "?";
+      for (let key of Object.keys(data)) {
+        queryParams += `${key}=${data[key]}&`;
+      }
+    }
+
+    console.log(functionName, data, token);
+    const res = await fetch(baseUrl + functionName + queryParams, opts);
     const result = await res.json();
+
+    console.log(result);
 
     if (result.error) throw new Error(result.error);
 
